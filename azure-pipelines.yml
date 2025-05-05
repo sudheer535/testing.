@@ -1,0 +1,32 @@
+trigger:
+- main
+
+pool:
+  name: 'agentpool'
+
+variables:
+  projectKey: 'my-project'
+  projectName: 'My Project'
+
+steps:
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'MySonarQubeServiceConnection'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(projectKey)'
+    cliProjectName: '$(projectName)'
+    extraProperties: |
+      sonar.sources=.
+      sonar.host.url=http://192.168.0.104:9000
+      sonar.login=$(new_sonarqube)
+
+- script: |
+    echo "Build your project here if needed"
+  displayName: 'Build Step'
+
+- task: SonarQubeAnalyze@5
+
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
