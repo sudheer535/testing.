@@ -5,24 +5,39 @@ pool:
   name: 'agentpool'
 
 variables:
-  projectKey: 'my-project'
+  SONAR_PROJECT_KEY: 'python-app'
+  SONAR_PROJECT_NAME: 'Python App'
 
 steps:
 - task: SonarQubePrepare@5
   inputs:
-    SonarQube: 'new_sonarqube'
+    SonarQube: 'new_sonarqube'  # Replace with your service connection name
     scannerMode: 'CLI'
     configMode: 'manual'
-    cliProjectKey: '$(projectKey)'
-    cliProjectName: '$(projectName)'
+    cliProjectKey: '$(SONAR_PROJECT_KEY)'
+    cliProjectName: '$(SONAR_PROJECT_NAME)'
     extraProperties: |
       sonar.sources=.
+      sonar.language=py
+      sonar.python.version=3
+      sonar.exclusions=**/__pycache__/**,**/*.pyc
       sonar.host.url=http://192.168.0.104:9000
       sonar.login=$(admin)
 
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
 - script: |
-    echo "Build your project here if needed"
-  displayName: 'Build Step'
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+- script: |
+    echo "Run your Python tests here (e.g., pytest)"
+    # pytest > result.log || true
+  displayName: 'Test Application'
 
 - task: SonarQubeAnalyze@5
 
