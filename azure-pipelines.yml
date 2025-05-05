@@ -11,7 +11,7 @@ variables:
 steps:
 - task: SonarQubePrepare@5
   inputs:
-    SonarQube: 'MySonarQubeServiceConnection'
+    SonarQube: 'new_sonarqube'
     scannerMode: 'CLI'
     configMode: 'manual'
     cliProjectKey: '$(projectKey)'
@@ -19,7 +19,7 @@ steps:
     extraProperties: |
       sonar.sources=.
       sonar.host.url=http://192.168.0.104:9000
-      sonar.login=$(new_sonarqube)
+      sonar.login=$(admin)
 
 - script: |
     echo "Build your project here if needed"
