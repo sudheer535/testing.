@@ -30,11 +30,6 @@ steps:
     addToPath: true
 
 - script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
-
-- script: |
     echo "Run your Python tests here (e.g., pytest)"
     # pytest > result.log || true
   displayName: 'Test Application'
