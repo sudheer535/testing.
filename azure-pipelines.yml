@@ -6,7 +6,6 @@ pool:
 
 variables:
   projectKey: 'my-project'
-  projectName: 'My Project'
 
 steps:
 - task: SonarQubePrepare@5
